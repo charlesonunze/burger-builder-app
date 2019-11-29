@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Burger.module.css';
-import Ingredient from './Ingredient';
+import Ingredient from './sub/Ingredient';
 
 const Burger = props => {
 	let ingredients = Object.keys(props.ingredients)
