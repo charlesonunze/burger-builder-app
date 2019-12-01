@@ -22,6 +22,9 @@ const BuildControls = props => {
 		<div className={styles.BuildControls}>
 			<h4>Current Price: ${props.totalPrice.toFixed(2)}</h4>
 			{buildControls}
+			<button className={styles.OrderButton} disabled={!props.isPurchasable}>
+				ORDER NOW
+			</button>
 		</div>
 	);
 };
