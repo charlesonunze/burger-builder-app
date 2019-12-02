@@ -18,11 +18,18 @@ const BuildControls = props => {
 			remove={() => props.onDelete(e.type)}
 		/>
 	));
+
 	return (
 		<div className={styles.BuildControls}>
 			<h4>Current Price: ${props.totalPrice.toFixed(2)}</h4>
+
 			{buildControls}
-			<button className={styles.OrderButton} disabled={!props.isPurchasable}>
+
+			<button
+				className={styles.OrderButton}
+				disabled={!props.isPurchasable}
+				onClick={props.updateOrderState}
+			>
 				ORDER NOW
 			</button>
 		</div>

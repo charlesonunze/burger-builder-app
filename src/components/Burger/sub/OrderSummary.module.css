@@ -1,0 +1,10 @@
+.OrderSummary h4,
+.OrderSummary p {
+	text-align: center;
+	font-weight: bold;
+}
+
+.OrderSummary li {
+	text-transform: capitalize;
+	list-style: none;
+}

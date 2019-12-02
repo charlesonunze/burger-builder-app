@@ -1,6 +1,8 @@
 import React from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/sub/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/sub/OrderSummary';
 
 const INGREDIENT_PRICES = {
 	meat: 1.5,
@@ -18,7 +20,8 @@ class BurgerBuilder extends React.Component {
 			meat: 0
 		},
 		totalPrice: 4,
-		isPurchasable: false
+		isPurchasable: false,
+		isOrdering: false
 	};
 
 	addIngredientHandler = type => {
@@ -42,9 +45,34 @@ class BurgerBuilder extends React.Component {
 		this.setState({ ...state, isPurchasable: sum > 0 });
 	};
 
+	updateOrderState = () => {
+		this.setState({ isOrdering: true });
+	};
+
+	closeModalHandler = () => {
+		this.setState({ isOrdering: false });
+	};
+
+	continuePurchaseHandler = () => {
+		alert('continue...');
+	};
+
+	cancelPurchaseHandler = () => {
+		this.closeModalHandler();
+	};
+
 	render() {
 		return (
 			<>
+				<Modal show={this.state.isOrdering} closeModal={this.closeModalHandler}>
+					<OrderSummary
+						ingredients={this.state.ingredients}
+						totalPrice={this.state.totalPrice}
+						continuePurchase={this.continuePurchaseHandler}
+						cancelPurchase={this.cancelPurchaseHandler}
+					/>
+				</Modal>
+
 				<Burger ingredients={this.state.ingredients} />
 
 				<BuildControls
@@ -52,6 +80,7 @@ class BurgerBuilder extends React.Component {
 					onAdd={this.addIngredientHandler}
 					onDelete={this.removeIngredientHandler}
 					isPurchasable={this.state.isPurchasable}
+					updateOrderState={this.updateOrderState}
 				/>
 			</>
 		);
