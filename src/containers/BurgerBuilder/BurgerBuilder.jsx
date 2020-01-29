@@ -6,6 +6,7 @@ import OrderSummary from '../../components/Burger/sub/OrderSummary';
 
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import HandleErrors from '../../components/HandleErrors/HandleErrors';
 
 const INGREDIENT_PRICES = {
 	meat: 1.5,
@@ -116,4 +117,4 @@ class BurgerBuilder extends React.Component {
 	}
 }
 
-export default BurgerBuilder;
+export default HandleErrors(BurgerBuilder, axios);
