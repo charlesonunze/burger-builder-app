@@ -5,6 +5,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/sub/OrderSummary';
 
 import axios from '../../axios-orders';
+
 import Spinner from '../../components/UI/Spinner/Spinner';
 import HandleErrors from '../../components/HandleErrors/HandleErrors';
 
@@ -17,16 +18,12 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends React.Component {
 	state = {
-		ingredients: {
-			salad: 0,
-			bacon: 0,
-			cheese: 0,
-			meat: 0
-		},
+		ingredients: null,
 		totalPrice: 4,
 		isPurchasable: false,
 		isOrdering: false,
-		loading: false
+		loading: false,
+		error: false
 	};
 
 	addIngredientHandler = type => {
@@ -85,17 +82,50 @@ class BurgerBuilder extends React.Component {
 		this.closeModalHandler();
 	};
 
+	componentDidMount() {
+		axios
+			.get('/ingredients.json')
+			.then(res => {
+				this.setState({ ingredients: res.data });
+			})
+			.catch(e => {
+				this.setState({ error: true });
+			});
+	}
+
 	render() {
-		const orderSummary = this.state.loading ? (
-			<Spinner />
+		let burger = this.state.error ? (
+			<p style={{ textAlign: 'center' }}>Ingredients could not be loaded.</p>
 		) : (
-			<OrderSummary
-				ingredients={this.state.ingredients}
-				totalPrice={this.state.totalPrice}
-				continuePurchase={this.continuePurchaseHandler}
-				cancelPurchase={this.cancelPurchaseHandler}
-			/>
+			<Spinner />
 		);
+
+		let orderSummary = this.state.loading ? <Spinner /> : null;
+
+		if (this.state.ingredients) {
+			burger = (
+				<>
+					<Burger ingredients={this.state.ingredients} />
+
+					<BuildControls
+						totalPrice={this.state.totalPrice}
+						onAdd={this.addIngredientHandler}
+						onDelete={this.removeIngredientHandler}
+						isPurchasable={this.state.isPurchasable}
+						updateOrderState={this.updateOrderState}
+					/>
+				</>
+			);
+
+			orderSummary = (
+				<OrderSummary
+					ingredients={this.state.ingredients}
+					totalPrice={this.state.totalPrice}
+					continuePurchase={this.continuePurchaseHandler}
+					cancelPurchase={this.cancelPurchaseHandler}
+				/>
+			);
+		}
 
 		return (
 			<>
@@ -103,15 +133,7 @@ class BurgerBuilder extends React.Component {
 					{orderSummary}
 				</Modal>
 
-				<Burger ingredients={this.state.ingredients} />
-
-				<BuildControls
-					totalPrice={this.state.totalPrice}
-					onAdd={this.addIngredientHandler}
-					onDelete={this.removeIngredientHandler}
-					isPurchasable={this.state.isPurchasable}
-					updateOrderState={this.updateOrderState}
-				/>
+				{burger}
 			</>
 		);
 	}
