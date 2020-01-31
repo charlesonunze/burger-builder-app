@@ -1,6 +1,9 @@
 import React from 'react';
-import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import { Route } from 'react-router-dom';
+
 import Spinner from '../../components/UI/Spinner/Spinner';
+import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import ContactDetails from './ContactDetails/ContactDetails';
 
 class Checkout extends React.Component {
 	state = {
@@ -29,13 +32,21 @@ class Checkout extends React.Component {
 		let checkoutSummary = !this.state.ingredients ? (
 			<Spinner />
 		) : (
-			<CheckoutSummary
-				ingredients={this.state.ingredients}
-				continuePurchase={this.continuePurchaseHandler}
-				cancelPurchase={this.cancelPurchaseHandler}
-			/>
-    );
-    
+			<div>
+				<CheckoutSummary
+					ingredients={this.state.ingredients}
+					continuePurchase={this.continuePurchaseHandler}
+					cancelPurchase={this.cancelPurchaseHandler}
+				/>
+
+				<Route
+					path={this.props.match.url + '/contact-details'}
+					component={ContactDetails}
+				/>
+			</div>
+		);
+
+		console.log(this.props.match.path+'/contact-details');
 		return <div>{checkoutSummary}</div>;
 	}
 }

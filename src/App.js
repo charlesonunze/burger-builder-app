@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Layout from './components/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from './containers/BurgerBuilder/Checkout';
+import Checkout from './containers/Checkout/Checkout';
 
 function App() {
 	return (
@@ -11,7 +11,7 @@ function App() {
 			<Layout>
 				<Switch>
 					<Route path='/' component={BurgerBuilder} exact />
-					<Route path='/checkout' component={Checkout} exact />
+					<Route path='/checkout' component={Checkout} />
 				</Switch>
 			</Layout>
 		</div>
