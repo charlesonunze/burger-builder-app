@@ -14,8 +14,8 @@ h4 {
 }
 
 button,
-input {
-	border-radius: 7px;
+input, select {
+	border-radius: 3px;
 }
 
 /* width */
