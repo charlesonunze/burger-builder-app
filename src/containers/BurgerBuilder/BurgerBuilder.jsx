@@ -104,7 +104,7 @@ class BurgerBuilder extends React.Component {
 
 	render() {
 		let burger = this.state.error ? (
-			<p style={{ textAlign: 'center' }}>Ingredients could not be loaded.</p>
+			<h4 style={{ textAlign: 'center' }}>Ingredients could not be loaded.</h4>
 		) : (
 			<Spinner />
 		);

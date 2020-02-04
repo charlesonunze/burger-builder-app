@@ -3,9 +3,17 @@ body {
 	font-family: 'Archia';
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background-color: #eee;
+	background-color: #0a010ff6;
 }
 
-button {
+h1,
+h2,
+h3,
+h4 {
+	color: #fff;
+}
+
+button,
+input {
 	border-radius: 7px;
 }
