@@ -78,38 +78,29 @@ class ContactDetails extends React.Component {
 		formIsValid: false
 	};
 
+	handleInputChange = (event, inputId) => {
+		let orderForm = { ...this.state.orderForm };
+		orderForm[inputId].value = event.target.value;
+		this.setState({ orderForm });
+	};
+
 	render() {
-		const { name, email, street, zipCode, deliveryMethod } = this.state.orderForm;
+		const orderForm = { ...this.state.orderForm };
+		const contactForm = Object.keys(this.state.orderForm).map(key => (
+			<Input
+				key={key}
+				elementType={orderForm[key].elementType}
+				elementConfig={orderForm[key].elementConfig}
+				value={orderForm[key].value}
+				handleUserInput={event => this.handleInputChange(event, key)}
+			/>
+		));
 
 		return (
 			<div className={styles.ContactData}>
 				<h4>Enter your contact details</h4>
 
-				<Input
-					elementType={name.elementType}
-					elementConfig={name.elementConfig}
-					value={name.value}
-				/>
-				<Input
-					elementType={email.elementType}
-					elementConfig={email.elementConfig}
-					value={email.value}
-				/>
-				<Input
-					elementType={street.elementType}
-					elementConfig={street.elementConfig}
-					value={street.value}
-				/>
-				<Input
-					elementType={zipCode.elementType}
-					elementConfig={zipCode.elementConfig}
-					value={zipCode.value}
-				/>
-				<Input
-					elementType={deliveryMethod.elementType}
-					elementConfig={deliveryMethod.elementConfig}
-					value={deliveryMethod.value}
-				/>
+				{contactForm}
 
 				<Button btnType='Success' clicked={this.props.continuePurchase}>
 					Complete Order

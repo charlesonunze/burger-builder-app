@@ -46,7 +46,6 @@ class Checkout extends React.Component {
 			</div>
 		);
 
-		console.log(this.props.match.path+'/contact-details');
 		return <div>{checkoutSummary}</div>;
 	}
 }
