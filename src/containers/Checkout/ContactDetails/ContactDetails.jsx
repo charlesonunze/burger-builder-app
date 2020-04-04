@@ -3,6 +3,8 @@ import styles from './ContactDetails.module.css';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 
+import axios from '../../../axios-orders';
+
 class ContactDetails extends React.Component {
 	state = {
 		orderForm: {
@@ -75,7 +77,37 @@ class ContactDetails extends React.Component {
 				valid: true
 			}
 		},
-		formIsValid: false
+		formIsValid: false,
+		loading: false
+	};
+
+	submitFormHandler = event => {
+		event.preventDefault();
+
+		const formData = {};
+
+		for (let formElementIdentifier in this.state.orderForm) {
+			formData[formElementIdentifier] = this.state.orderForm[
+				formElementIdentifier
+			].value;
+		}
+
+		const order = {
+			ingredients: this.props.ingredients,
+			price: this.props.price.toFixed(2),
+			orderData: formData,
+			userId: this.props.userId
+		};
+
+		axios
+			.post('/orders.json', order)
+			.then(order => {
+				this.setState({ loading: false });
+				this.props.history.push('/');
+			})
+			.catch(e => {
+				this.setState({ loading: false });
+			});
 	};
 
 	handleInputChange = (event, inputId) => {
@@ -100,11 +132,10 @@ class ContactDetails extends React.Component {
 			<div className={styles.ContactData}>
 				<h4>Enter your contact details</h4>
 
-				{contactForm}
-
-				<Button btnType='Success' clicked={this.props.continuePurchase}>
-					Complete Order
-				</Button>
+				<form onSubmit={this.submitFormHandler}>
+					{contactForm}
+					<Button btnType='Success'>Complete Order</Button>
+				</form>
 			</div>
 		);
 	}

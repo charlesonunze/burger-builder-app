@@ -7,17 +7,25 @@ import ContactDetails from './ContactDetails/ContactDetails';
 
 class Checkout extends React.Component {
 	state = {
-		ingredients: null
+		ingredients: null,
+		price: 0
 	};
 
 	componentDidMount() {
 		let query = new URLSearchParams(this.props.location.search);
 		let ingredients = {};
+		let price = 0;
 
 		for (let i of query.entries()) {
-			ingredients[i[0]] = +i[1];
+			if (i[0] === 'price') {
+				price += +i[1];
+				continue;
+			} else {
+				ingredients[i[0]] = +i[1];
+			}
 		}
-		this.setState({ ingredients });
+
+		this.setState({ ingredients, price });
 	}
 
 	continuePurchaseHandler = () => {
@@ -41,7 +49,13 @@ class Checkout extends React.Component {
 
 				<Route
 					path={this.props.match.url + '/contact-details'}
-					component={ContactDetails}
+					render={props => (
+						<ContactDetails
+							price={this.state.price}
+							ingredients={this.state.ingredients}
+							{...props}
+						/>
+					)}
 				/>
 			</div>
 		);
